@@ -27,9 +27,11 @@
     "@nestjs/typeorm": "^7.1.5",
     "dotenv": "^8.2.0",
     "fabric-network": "^2.2.5",
+    "mysql": "^2.18.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^6.6.6"
+    "rxjs": "^6.6.6",
+    "typeorm": "^0.2.31"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.5.6",
