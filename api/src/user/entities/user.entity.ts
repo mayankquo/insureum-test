@@ -1,4 +1,4 @@
-import { Orgs } from "enums";
+import { Orgs } from "../../core/enums";
 import { BaseEntity } from "src/core/helpers/base.entity";
 import { Column, Entity } from "typeorm";
 

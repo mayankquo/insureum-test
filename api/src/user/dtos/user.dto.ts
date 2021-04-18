@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsEmail } from "class-validator";
-import { Orgs } from "enums";
+import { Orgs } from '../../core/enums';
 
 export class UserDto{
     

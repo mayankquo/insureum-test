@@ -6,6 +6,7 @@ import { ConfigModule } from './config/config.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService } from './config/config.service';
 import { CoreModule } from './core/core.module';
+import { NetworkModule } from './network/network.module';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { CoreModule } from './core/core.module';
       imports: [ConfigModule],
       useClass: ConfigService,
     }),
-    CoreModule
+    CoreModule,
+    NetworkModule
   ],
   controllers: [AppController],
   providers: [AppService],
