@@ -17,7 +17,7 @@ services:
 
   orderer.insureum.com:
     container_name: orderer.insureum.com
-    image: hyperledger/fabric-orderer:latest
+    image: hyperledger/fabric-orderer:2.3.1
     labels:
       service: hyperledger-fabric
     environment:
@@ -59,7 +59,7 @@ services:
 
   peer0.insurer.insureum.com:
     container_name: peer0.insurer.insureum.com
-    image: hyperledger/fabric-peer:latest
+    image: hyperledger/fabric-peer:2.3.1
     labels:
       service: hyperledger-fabric
     environment:
@@ -96,7 +96,7 @@ services:
   
   cli:
     container_name: cli
-    image: hyperledger/fabric-tools:latest
+    image: hyperledger/fabric-tools:2.3.1
     labels:
       service: hyperledger-fabric
     tty: true
