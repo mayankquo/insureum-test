@@ -13,7 +13,7 @@
 export CORE_PEER_TLS_ENABLED=true
 export ORDERER_CA=${PWD}/organizations/ordererOrganizations/insureum.com/orderers/orderer.insureum.com/msp/tlscacerts/tlsca.insureum.com-cert.pem
 export PEER0_INSURER_CA=${PWD}/organizations/peerOrganizations/insurer.insureum.com/peers/peer0.insurer.insureum.com/tls/ca.crt
-# export PEER0_ORG2_CA=${PWD}/organizations/peerOrganizations/org2.insureum.com/peers/peer0.org2.insureum.com/tls/ca.crt
+export PEER0_ANALYST_CA=${PWD}/organizations/peerOrganizations/analyst.insureum.com/peers/peer0.analyst.insureum.com/tls/ca.crt
 # export PEER0_ORG3_CA=${PWD}/organizations/peerOrganizations/org3.insureum.com/peers/peer0.org3.insureum.com/tls/ca.crt
 export ORDERER_ADMIN_TLS_SIGN_CERT=${PWD}/organizations/ordererOrganizations/insureum.com/orderers/orderer.insureum.com/tls/server.crt
 export ORDERER_ADMIN_TLS_PRIVATE_KEY=${PWD}/organizations/ordererOrganizations/insureum.com/orderers/orderer.insureum.com/tls/server.key
@@ -32,11 +32,11 @@ setGlobals() {
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_INSURER_CA
     export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/insurer.insureum.com/users/Admin@insurer.insureum.com/msp
     export CORE_PEER_ADDRESS=localhost:7051
-  # elif [ $USING_ORG -eq 2 ]; then
-  #   export CORE_PEER_LOCALMSPID="Org2MSP"
-  #   export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG2_CA
-  #   export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org2.insureum.com/users/Admin@org2.insureum.com/msp
-  #   export CORE_PEER_ADDRESS=localhost:9051
+  elif [ $USING_ORG == analyst ]; then
+    export CORE_PEER_LOCALMSPID="AnalystMSP"
+    export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ANALYST_CA
+    export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/analyst.insureum.com/users/Admin@analyst.insureum.com/msp
+    export CORE_PEER_ADDRESS=localhost:9051
 
   # elif [ $USING_ORG -eq 3 ]; then
   #   export CORE_PEER_LOCALMSPID="Org3MSP"
