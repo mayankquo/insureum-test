@@ -57,7 +57,7 @@ export class NetworkService {
         return caClient;
     }
 
-    private async enrollAdmin(org: Orgs, ccp, caHostName) {
+    private async enrollAdmin(org: Orgs, ccp, caHostName): Promise<void> {
 
         try {
             const wallet = await this.buildWallet(org);
@@ -97,7 +97,7 @@ export class NetworkService {
         }
     }
 
-    public async registerAndEnrollUser(user: UserDto) {
+    public async registerAndEnrollUser(user: UserDto): Promise<void> {
 
         try {
             const { ccpPath, caHostName } = this.getCcpPathAndCaHostName(user.org)

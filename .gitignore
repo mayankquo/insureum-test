@@ -2,6 +2,9 @@
 /api/dist
 /api/node_modules
 
+/insurance-contract/node_modules
+/insurance-contract/package-lock.json
+
 # Logs
 /api/logs
 /api/*.log
