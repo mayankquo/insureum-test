@@ -8,4 +8,14 @@ export class InsuranceContract extends Contract{
 
     }
 
+    @Transaction()
+    public async buy(ctx: Context){
+
+    }
+
+    @Transaction()
+    public async claim(ctx: Context){
+
+    }
+
 }

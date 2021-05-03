@@ -13,12 +13,12 @@ export class ConfigService implements TypeOrmOptionsFactory {
 
     createTypeOrmOptions(): TypeOrmModuleOptions {
         return {
-            type: 'mysql',
-            host: this.envConfig.MYSQL_HOST,
-            port: this.envConfig.MYSQL_PORT,
-            username: this.envConfig.MYSQL_USER,
-            password: this.envConfig.MYSQL_PASS,
-            database: this.envConfig.MYSQL_DB,
+            type: 'postgres',
+            host: this.envConfig.DB_HOST,
+            port: this.envConfig.DB_PORT,
+            username: this.envConfig.DB_USER,
+            password: this.envConfig.DB_PASSWORD,
+            database: this.envConfig.DB_NAME,
             synchronize: true,
             entities: [__dirname + '/../**/*.entity{.ts,.js}']
         }

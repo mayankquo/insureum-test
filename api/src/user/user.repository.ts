@@ -6,7 +6,7 @@ import { User } from "./entities/user.entity";
 @EntityRepository(User)
 export class UserRepository extends BaseRepository<User>{
 
-    public getById(userId: string): Promise<User | null> {
+    public getUserById(userId: string): Promise<User | null> {
         return this.get(userId);
     }
 

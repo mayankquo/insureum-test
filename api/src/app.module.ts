@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService } from './config/config.service';
 import { CoreModule } from './core/core.module';
 import { NetworkModule } from './network/network.module';
+import { PolicyModule } from './policy/policy.module';
 
 @Module({
   imports: [
@@ -17,13 +18,10 @@ import { NetworkModule } from './network/network.module';
       useClass: ConfigService,
     }),
     CoreModule,
-    NetworkModule
+    NetworkModule,
+    PolicyModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {
-  constructor(){
-    console.log('AppModule')
-  }
- }
+export class AppModule {}

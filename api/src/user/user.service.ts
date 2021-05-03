@@ -5,6 +5,8 @@ import { UserDto } from './dtos';
 import { UserRepository } from './user.repository';
 import { plainToClass } from 'class-transformer';
 import { ResponseDTO } from 'src/core/dtos';
+import { UserRole } from 'src/core/enums/userRole';
+import { Orgs } from 'src/core/enums';
 
 const LOGGER_PREFIX = 'UserService';
 
@@ -16,7 +18,32 @@ export class UserService {
     private readonly networkService: NetworkService,
   ) {}
 
-  public async registerUser(newUser: UserDto) {
+  /**
+   * Register new user
+   * @param newUser
+   * @returns
+   */
+  public async register(newUser: UserDto): Promise<ResponseDTO> {
+    try {
+      if (newUser.role === UserRole.Company) {
+        newUser.org = Orgs.Insurer;
+        return await this.registerInsurer(newUser);
+      } else {
+        await this.userRepository.save(newUser);
+        return plainToClass(ResponseDTO, {
+          success: true,
+        });
+      }
+    } catch (error) {
+      console.log(LOGGER_PREFIX, 'registerUser', error);
+      throw new HttpException(
+        `Something went wrong. Please try again later.`,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  private async registerInsurer(newUser: UserDto) {
     try {
       await this.networkService.registerAndEnrollUser(newUser);
       const wallet = await this.networkService.buildWallet(newUser.org);
