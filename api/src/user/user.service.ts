@@ -25,7 +25,7 @@ export class UserService {
    */
   public async register(newUser: UserDto): Promise<ResponseDTO> {
     try {
-      if (newUser.role === UserRole.Company) {
+      if (newUser.role === UserRole.Insurer) {
         newUser.org = Orgs.Insurer;
         return await this.registerInsurer(newUser);
       } else {

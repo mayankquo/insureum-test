@@ -14,7 +14,6 @@ export CORE_PEER_TLS_ENABLED=true
 export ORDERER_CA=${PWD}/organizations/ordererOrganizations/insureum.com/orderers/orderer.insureum.com/msp/tlscacerts/tlsca.insureum.com-cert.pem
 export PEER0_INSURER_CA=${PWD}/organizations/peerOrganizations/insurer.insureum.com/peers/peer0.insurer.insureum.com/tls/ca.crt
 export PEER0_ANALYST_CA=${PWD}/organizations/peerOrganizations/analyst.insureum.com/peers/peer0.analyst.insureum.com/tls/ca.crt
-# export PEER0_ORG3_CA=${PWD}/organizations/peerOrganizations/org3.insureum.com/peers/peer0.org3.insureum.com/tls/ca.crt
 export ORDERER_ADMIN_TLS_SIGN_CERT=${PWD}/organizations/ordererOrganizations/insureum.com/orderers/orderer.insureum.com/tls/server.crt
 export ORDERER_ADMIN_TLS_PRIVATE_KEY=${PWD}/organizations/ordererOrganizations/insureum.com/orderers/orderer.insureum.com/tls/server.key
 
@@ -38,11 +37,6 @@ setGlobals() {
     export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/analyst.insureum.com/users/Admin@analyst.insureum.com/msp
     export CORE_PEER_ADDRESS=localhost:9051
 
-  # elif [ $USING_ORG -eq 3 ]; then
-  #   export CORE_PEER_LOCALMSPID="Org3MSP"
-  #   export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG3_CA
-  #   export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org3.insureum.com/users/Admin@org3.insureum.com/msp
-  #   export CORE_PEER_ADDRESS=localhost:11051
   else
     errorln "ORG Unknown"
   fi
@@ -64,10 +58,7 @@ setGlobalsCLI() {
   fi
   if [ $USING_ORG == insurer ]; then
     export CORE_PEER_ADDRESS=peer0.insurer.insureum.com:7051
-  # elif [ $USING_ORG -eq 2 ]; then
-  #   export CORE_PEER_ADDRESS=peer0.org2.insureum.com:9051
-  # elif [ $USING_ORG -eq 3 ]; then
-  #   export CORE_PEER_ADDRESS=peer0.org3.insureum.com:11051
+
   else
     errorln "ORG Unknown"
   fi
@@ -81,7 +72,7 @@ parsePeerConnectionParameters() {
   PEERS=""
   while [ "$#" -gt 0 ]; do
     setGlobals $1
-    PEER="peer0.org$1"
+    PEER="peer0.$1"
     ## Set peer addresses
     if [ -z "$PEERS" ]
     then
@@ -91,7 +82,7 @@ parsePeerConnectionParameters() {
     fi
     PEER_CONN_PARMS=("${PEER_CONN_PARMS[@]}" --peerAddresses $CORE_PEER_ADDRESS)
     ## Set path to TLS certificate
-    CA=PEER0_ORG$1_CA
+    CA=PEER0_$1_CA
     TLSINFO=(--tlsRootCertFiles "${!CA}")
     PEER_CONN_PARMS=("${PEER_CONN_PARMS[@]}" "${TLSINFO[@]}")
     # shift by one to get to the next organization

@@ -14,8 +14,8 @@ export class BaseRepository<
       .catch((error) => Promise.reject(throwException ? error : null));
   }
 
-  public get(id: string, options?: FindOneOptions<T>): Promise<T | null> {
-    return this.findOne({ where: { id, ...options } });
+  public get(options?: FindOneOptions<T>): Promise<T | null> {
+    return this.findOne({ ...options });
   }
 
   protected findOne(

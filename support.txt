@@ -1,0 +1,2 @@
+./network.sh createChannel -ca
+./network.sh deployCC -ca -ccn 'Insurance' -ccp ./insurance-chaincode/ -ccl 'typescript' -cci 'init'

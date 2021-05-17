@@ -5,14 +5,15 @@ import { Policy } from './entities/policy.entity';
 
 @EntityRepository(Policy)
 export class PolicyRepository extends BaseRepository<Policy> {
-  public createPolicy(
+  public async createPolicy(
     generatePolicyDto: GeneratePolicyDto,
   ): Promise<Policy | null> {
     return this.save(generatePolicyDto);
   }
 
-  public getAllPolicies(userId): Promise<Policy[]> {
-    return this.repository
+  public async getAllPolicies(userId): Promise<Policy[]> {
+    console.log(userId)
+    return await this.repository
       .createQueryBuilder('Policy')
       .innerJoinAndSelect('Policy.issuedBy', 'User')
       .where('Policy.issuerId = :userId', { userId })

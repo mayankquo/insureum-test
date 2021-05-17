@@ -24,9 +24,10 @@ export class PolicyService {
    */
   public async generatePolicy(generatePolicyDto: GeneratePolicyDto) {
     try {
-      const user = await this.userRepository.get(generatePolicyDto.issuerId, {
-        where: { role: UserRole.Company },
-      });
+      const user = await this.userRepository.get({where:{
+        id: generatePolicyDto.issuerId,
+        role: UserRole.Insurer
+      }});
 
       if (!!user) {
         const newPolicy = await this.policyRepository.createPolicy(
@@ -53,8 +54,11 @@ export class PolicyService {
 
   public async getAllPolicies(userId: string) {
     try {
-      const user = this.userRepository.get(userId, {
-        where: { role: UserRole.Company },
+      const user = this.userRepository.get({
+        where : {
+          id: userId,
+          role: UserRole.Insurer
+        }
       });
 
       if (!!user) {

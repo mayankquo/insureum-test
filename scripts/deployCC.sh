@@ -285,44 +285,32 @@ chaincodeQuery() {
 ## package the chaincode
 packageChaincode
 
-## Install chaincode on peer0.insurer and peer0.org2
+## Install chaincode on peer0.insurer
 infoln "Installing chaincode on peer0.insurer..."
-installChaincode 1
-infoln "Install chaincode on peer0.org2..."
-installChaincode 2
+installChaincode insurer
 
 ## query whether the chaincode is installed
-queryInstalled 1
+queryInstalled insurer
 
 ## approve the definition for insurer
-approveForMyOrg 1
+approveForMyOrg insurer
 
 ## check whether the chaincode definition is ready to be committed
 ## expect insurer to have approved and org2 not to
-checkCommitReadiness 1 "\"InsurerMSP\": true" "\"Org2MSP\": false"
-checkCommitReadiness 2 "\"InsurerMSP\": true" "\"Org2MSP\": false"
-
-## now approve also for org2
-approveForMyOrg 2
-
-## check whether the chaincode definition is ready to be committed
-## expect them both to have approved
-checkCommitReadiness 1 "\"InsurerMSP\": true" "\"Org2MSP\": true"
-checkCommitReadiness 2 "\"InsurerMSP\": true" "\"Org2MSP\": true"
+checkCommitReadiness insurer "\"InsurerMSP\": true"
 
 ## now that we know for sure both orgs have approved, commit the definition
-commitChaincodeDefinition 1 2
+commitChaincodeDefinition insurer
 
 ## query on both orgs to see that the definition committed successfully
-queryCommitted 1
-queryCommitted 2
+queryCommitted insurer
 
 ## Invoke the chaincode - this does require that the chaincode have the 'initLedger'
 ## method defined
 if [ "$CC_INIT_FCN" = "NA" ]; then
   infoln "Chaincode initialization is not required"
 else
-  chaincodeInvokeInit 1 2
+  chaincodeInvokeInit insurer
 fi
 
 exit 0

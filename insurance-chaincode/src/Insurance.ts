@@ -1,6 +1,6 @@
 import { Object, Property } from "fabric-contract-api";
 import { InsuranceType } from "./enums/insuranceType";
-import { Company } from "./models/company.model";
+import { Insurer } from "./models/insurer.model";
 import { User } from "./models/user.model";
 
 @Object()
@@ -10,7 +10,7 @@ export class Insurance {
   public id: string;
 
   @Property()
-  public issuedBy: Company;
+  public issuedBy: Insurer;
 
   @Property()
   public type: InsuranceType;
