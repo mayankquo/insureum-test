@@ -12,8 +12,9 @@ export class InsuranceContract extends Contract {
     super("Insurance");
   }
 
-  public init(){
-    console.log('Invoked successfully')
+  @Transaction()
+  public init(ctx: Context){
+    console.log(`Invoked successfully. TxId : ${ctx.stub.getTxID()}`)
   }
 
   async beforeTransaction(ctx: Context) {
