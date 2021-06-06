@@ -8,9 +8,6 @@ import { Insurance } from "./Insurance";
   description: "Smart contract for issuing, buying and claiming insurance",
 })
 export class InsuranceContract extends Contract {
-  constructor() {
-    super("Insurance");
-  }
 
   @Transaction()
   public init(ctx: Context){
@@ -58,7 +55,7 @@ export class InsuranceContract extends Contract {
         `The asset ${params.issuedById}::${params.insuranceid}::${params.buyerId} does not exist`
       );
     }
-    return plainToClass(Insurance, result.toString());
+    return plainToClass(Insurance, result?.toString());
   }
 
   @Transaction()

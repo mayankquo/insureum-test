@@ -1,20 +1,27 @@
 {
   "name": "insurance",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "engines": {
+    "node": ">=12",
+    "npm": ">=5"
+  },
   "dependencies": {
     "class-transformer": "^0.4.0",
     "fabric-contract-api": "^2.2.1",
     "fabric-shim": "^2.2.1",
-    "typescript": "^4.2.4"
+    "typescript": "^4.3.2"
   },
   "devDependencies": {},
   "scripts": {
-    "build": "tsc --build",
-    "start": "npm install && fabric-chaincode-node start",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "fabric-chaincode-node start",
+    "build": "tsc",
+    "build:watch": "tsc -w",
+    "prepublishOnly": "npm run build"
   },
+  "engineStrict": true,
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "description": ""
 }

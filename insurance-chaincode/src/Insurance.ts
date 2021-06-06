@@ -6,7 +6,7 @@ import { User } from "./models/user.model";
 @Object()
 export class Insurance {
 
-  @Property()
+  @Property('id', 'string')
   public id: string;
 
   @Property()
@@ -44,6 +44,8 @@ export class Insurance {
 
   @Property()
   public expiredAt: Date;
+
+  constructor(){}
 
 
 }
