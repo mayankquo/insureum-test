@@ -1,51 +1,154 @@
-import { Object, Property } from "fabric-contract-api";
+import { Info, Object, Property } from "fabric-contract-api";
 import { InsuranceType } from "./enums/insuranceType";
 import { Insurer } from "./models/insurer.model";
 import { User } from "./models/user.model";
 
 @Object()
 export class Insurance {
+  private _id: string;
+  private _issuedBy: Insurer;
+  private _type: InsuranceType;
+  private _premium: string;
+  private _buyer: User | null;
+  private _nominee: string | null;
+  private _sumCovered: string;
+  private _issuedAt: Date;
+  private _boughtAt: Date | null;
+  private _claimedAt: Date | null;
+  private _updatedAt: Date;
+  private _renewedAt: Date | null;
+  private _expiredAt: Date;
 
-  @Property('id', 'string')
-  public id: string;
+  constructor(data: any) {
+    this._id = data ? data.id : null;
+    this._issuedBy = data ? data.issuedBy : null;
+    this._type = data ? data.type : null;
+    this._premium = data ? data.premium : null;
+    this._buyer = data ? data.buyer : null;
+    this._nominee = data ? data.nominee : null;
+    this._sumCovered = data ? data.sumCovered : null;
+    this._issuedAt = data ? data.issuedAt : null;
+    this._boughtAt = data ? data.boughtAt : null;
+    this._claimedAt = data ? data.claimedAt : null;
+    this._updatedAt = data ? data.updatedAt : null;
+    this._renewedAt = data ? data.renewedAt : null;
+    this._expiredAt = data ? data.expiredAt : null;
+  }
 
-  @Property()
-  public issuedBy: Insurer;
+  @Property("id")
+  get id() {
+    return this._id;
+  }
 
-  @Property()
-  public type: InsuranceType;
+  set id(id: string) {
+    this._id = id;
+  }
 
-  @Property()
-  public premium: string;
+  @Property("issuedBy")
+  get issuedBy() {
+    return this._issuedBy;
+  }
 
-  @Property()
-  public buyer: User; 
+  set issuedBy(issuedBy: Insurer) {
+    this._issuedBy = issuedBy;
+  }
 
-  @Property()
-  public nominee: string;
+  @Property("type")
+  get type() {
+    return this._type;
+  }
 
-  @Property()
-  public sumCovered: string; 
+  set type(type: InsuranceType) {
+    this._type = type;
+  }
 
-  @Property()
-  public issuedAt: Date;
+  @Property("premium")
+  get premium() {
+    return this._premium;
+  }
 
-  @Property()
-  public boughtAt: Date;
+  set premium(premium: string) {
+    this._premium = premium;
+  }
 
-  @Property()
-  public claimedAt: Date;
+  @Property("buyer")
+  get buyer() {
+    return this._buyer;
+  }
 
-  @Property()
-  public updatedAt: Date;
+  set buyer(buyer: User | null) {
+    this._buyer = buyer;
+  }
 
-  @Property()
-  public renewedAt : Date;
+  @Property("nominee")
+  get nominee() {
+    return this._nominee;
+  }
 
-  @Property()
-  public expiredAt: Date;
+  set nominee(nominee: string | null) {
+    this._nominee = nominee;
+  }
 
-  constructor(){}
+  @Property("sumCovered")
+  get sumCovered() {
+    return this._sumCovered;
+  }
 
+  set sumCovered(sumCovered: string) {
+    this._sumCovered = sumCovered;
+  }
 
+  @Property("issuedAt")
+  get issuedAt() {
+    return this._issuedAt;
+  }
+
+  set issuedAt(issuedAt: Date) {
+    this._issuedAt = issuedAt;
+  }
+
+  @Property("boughtAt")
+  get boughtAt() {
+    return this._boughtAt;
+  }
+
+  set boughtAt(boughtAt: Date | null) {
+    this._boughtAt = boughtAt;
+  }
+
+  @Property("claimedAt")
+  get claimedAt() {
+    return this._claimedAt;
+  }
+
+  set claimedAt(claimedAt: Date | null) {
+    this._claimedAt = claimedAt;
+  }
+
+  @Property("updatedAt")
+  get updatedAt() {
+    return this._updatedAt;
+  }
+
+  set updatedAt(updatedAt: Date) {
+    this._updatedAt = updatedAt;
+  }
+
+  @Property("renewedAt")
+  get renewedAt() {
+    return this._renewedAt;
+  }
+
+  set renewedAt(renewedAt: Date | null) {
+    this._renewedAt = renewedAt;
+  }
+
+  @Property("expiredAt")
+  get expiredAt() {
+    return this._expiredAt;
+  }
+
+  set expiredAt(expiredAt: Date) {
+    this._expiredAt = expiredAt;
+  }
 }

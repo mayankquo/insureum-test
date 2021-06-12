@@ -4,14 +4,13 @@ import { ReadInsuranceDto } from "./dtos/readInsurance.dto";
 import { Insurance } from "./Insurance";
 
 @Info({
-  title: "AssetTransfer",
-  description: "Smart contract for issuing, buying and claiming insurance",
+  title: "Insurance Contract",
+  version: "1.0.1",
 })
 export class InsuranceContract extends Contract {
-
   @Transaction()
-  public init(ctx: Context){
-    console.log(`Invoked successfully. TxId : ${ctx.stub.getTxID()}`)
+  public init(ctx: Context) {
+    console.log(`Invoked successfully. TxId : ${ctx.stub.getTxID()}`);
   }
 
   async beforeTransaction(ctx: Context) {
