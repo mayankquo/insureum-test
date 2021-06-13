@@ -1,5 +1,6 @@
 import { plainToClass } from "class-transformer";
 import { Context, Contract, Info, Transaction } from "fabric-contract-api";
+import { CreateInsuranceDto } from "./dtos/createInsurance.dto";
 import { ReadInsuranceDto } from "./dtos/readInsurance.dto";
 import { Insurance } from "./Insurance";
 
@@ -14,30 +15,26 @@ export class InsuranceContract extends Contract {
   }
 
   async beforeTransaction(ctx: Context) {
-    ctx.logger.getLogger(ctx.clientIdentity.getMSPID());
     console.log(ctx.clientIdentity.getMSPID());
   }
 
   async afterTransaction(ctx: Context, result: any) {
-    ctx.logger.getLogger(result);
     console.log(result);
   }
 
   async unknownTransaction(ctx: Context) {
-    ctx.logger.getLogger(
-      `You've asked to invoke a function that does not exist: ${ctx.stub.getFunctionAndParameters()}`
-    );
-    console.log(ctx.stub.getFunctionAndParameters());
+    console.log(`You've asked to invoke a function that does not exist: ${ctx.stub.getFunctionAndParameters()}`);
     throw new Error(
       `You've asked to invoke a function that does not exist: ${ctx.stub.getFunctionAndParameters()}`
     );
   }
 
   @Transaction()
-  public async issue(ctx: Context, params: Insurance) {
+  public async issue(ctx: Context, params: CreateInsuranceDto) {
+    const value = plainToClass(Insurance, params)
     await ctx.stub.putState(
-      `${params.issuedBy.id}::${params.id}::${params.buyer.id}`,
-      Buffer.from(JSON.stringify(params))
+      `${params.issuedBy.id}::${params.id}`,
+      Buffer.from(JSON.stringify(value))
     );
   }
 
@@ -54,7 +51,7 @@ export class InsuranceContract extends Contract {
         `The asset ${params.issuedById}::${params.insuranceid}::${params.buyerId} does not exist`
       );
     }
-    return plainToClass(Insurance, result?.toString());
+    return plainToClass(Insurance, JSON.parse(result?.toString()));
   }
 
   @Transaction()

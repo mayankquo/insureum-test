@@ -5,24 +5,22 @@ import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 
 @Injectable()
 export class ConfigService implements TypeOrmOptionsFactory {
-    envConfig: any;
+  envConfig: any;
 
-    constructor() {
-        this.envConfig = dotenv.parse(fs.readFileSync('.env'));
-    }
+  constructor() {
+    this.envConfig = dotenv.parse(fs.readFileSync('.env'));
+  }
 
-    createTypeOrmOptions(): TypeOrmModuleOptions {
-        return {
-            type: 'postgres',
-            host: this.envConfig.DB_HOST,
-            port: this.envConfig.DB_PORT,
-            username: this.envConfig.DB_USER,
-            password: this.envConfig.DB_PASSWORD,
-            database: this.envConfig.DB_NAME,
-            synchronize: true,
-            entities: [__dirname + '/../**/*.entity{.ts,.js}']
-        }
-    }
-
-
+  createTypeOrmOptions(): TypeOrmModuleOptions {
+    return {
+      type: 'postgres',
+      host: this.envConfig.DB_HOST,
+      port: this.envConfig.DB_PORT,
+      username: this.envConfig.DB_USER,
+      password: this.envConfig.DB_PASSWORD,
+      database: this.envConfig.DB_NAME,
+      synchronize: true,
+      entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+    };
+  }
 }
