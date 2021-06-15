@@ -23,56 +23,43 @@ export class PolicyService {
    * @param generatePolicyDto
    */
   public async generatePolicy(generatePolicyDto: GeneratePolicyDto) {
-    try {
-      const user = await this.userRepository.get({where:{
+    const user = await this.userRepository.get({
+      where: {
         id: generatePolicyDto.issuerId,
-        role: UserRole.Insurer
-      }});
+        role: UserRole.Insurer,
+      },
+    });
 
-      if (!!user) {
-        const newPolicy = await this.policyRepository.createPolicy(
-          generatePolicyDto,
-        );
-        return plainToClass(ResponseDTO, {
-          success: true,
-          data: newPolicy,
-        });
-      } else {
-        return plainToClass(ResponseDTO, {
-          success: false,
-          message: 'User not authorized',
-        });
-      }
-    } catch (error) {
-      console.log(LOGGER_PREFIX, 'generatePolicy', error);
-      throw new HttpException(
-        `Something went wrong. Please try again later.`,
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+    if (!user) {
+      throw new HttpException('User does not exists', HttpStatus.BAD_REQUEST);
     }
+    const newPolicy = await this.policyRepository.createPolicy(
+      generatePolicyDto,
+    );
+    return plainToClass(ResponseDTO, {
+      success: true,
+      data: newPolicy,
+    });
   }
 
   public async getAllPolicies(userId: string) {
     try {
       const user = this.userRepository.get({
-        where : {
+        where: {
           id: userId,
-          role: UserRole.Insurer
-        }
+          role: UserRole.Insurer,
+        },
       });
 
-      if (!!user) {
-        const policies = this.policyRepository.getAllPolicies(userId);
-        return plainToClass(ResponseDTO, {
-          success: true,
-          data: policies,
-        });
-      } else {
-        return plainToClass(ResponseDTO, {
-          success: false,
-          message: 'User not authorized',
-        });
+      if (!user) {
+        throw new HttpException('User does not exists', HttpStatus.BAD_REQUEST);
       }
+
+      const policies = this.policyRepository.getAllPolicies(userId);
+      return plainToClass(ResponseDTO, {
+        success: true,
+        data: policies,
+      });
     } catch (error) {
       console.log(LOGGER_PREFIX, 'getAllPolicies', error);
       throw new HttpException(
