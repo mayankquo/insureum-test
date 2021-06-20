@@ -11,7 +11,7 @@ export class ConfigService implements TypeOrmOptionsFactory {
     this.envConfig = dotenv.parse(fs.readFileSync('.env'));
   }
 
-  createTypeOrmOptions(): TypeOrmModuleOptions {
+  public createTypeOrmOptions(): TypeOrmModuleOptions {
     return {
       type: 'postgres',
       host: this.envConfig.DB_HOST,
@@ -23,4 +23,8 @@ export class ConfigService implements TypeOrmOptionsFactory {
       entities: [__dirname + '/../**/*.entity{.ts,.js}'],
     };
   }
+
+  public getValue(key: string): string {
+		return this.envConfig[key] ? this.envConfig[key] : null;
+	}
 }

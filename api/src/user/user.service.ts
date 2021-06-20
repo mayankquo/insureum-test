@@ -66,4 +66,8 @@ export class UserService {
       );
     }
   }
+
+  public async getUserByEmail(email: string) {
+    return this.userRepository.get({ where: { email } });
+  }
 }
