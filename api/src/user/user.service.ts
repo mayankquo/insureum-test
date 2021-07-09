@@ -70,4 +70,8 @@ export class UserService {
   public async getUserByEmail(email: string) {
     return this.userRepository.get({ where: { email } });
   }
+
+  public async getUserByUserId(userId: string) {
+    return this.userRepository.getUserById(userId);
+  }
 }
