@@ -1,10 +1,7 @@
 import { Object, Property } from "fabric-contract-api";
-import { InsuranceType } from "./enums/insuranceType";
-import { Insurer } from "./models/insurer.model";
-import { User } from "./models/user.model";
 
 @Object()
-export class Insurance {
+export class Policy {
   @Property("id")
   public id: string;
 

@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { GeneratePolicyDto } from './dtos/genaratePolicy.dto';
+import { IssuePolicyDto } from './dtos/issuePolicy.dto';
 import { PolicyService } from './policy.service';
 
 @ApiTags('Policy')
@@ -8,17 +8,18 @@ import { PolicyService } from './policy.service';
 export class PolicyController {
   constructor(private readonly policyService: PolicyService) {}
 
-  @Post('generate')
+  @Post('issue')
   public async issuePolicy(
-    @Body() generatePolicyDto: GeneratePolicyDto,
+    @Body() issuePolicyDto: IssuePolicyDto,
   ) {
-    return await this.policyService.generatePolicy(generatePolicyDto);
+    return this.policyService.issuePolicy(issuePolicyDto);
   }
 
   @Get('all')
-  public async getAllPolicies(
-    @Query('userId') userId: string
+  public async getAllPoliciesByIssuerId(
+    @Query('issuerId') issuerId: string
   ){
-    return await this.policyService.getAllPolicies(userId);
+    return this.policyService.getAllPoliciesByIssuerId(issuerId);
   }
+
 }

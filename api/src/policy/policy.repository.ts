@@ -1,23 +1,29 @@
 import { BaseRepository } from 'src/core/helpers/base.repository';
 import { EntityRepository } from 'typeorm';
-import { GeneratePolicyDto } from './dtos/genaratePolicy.dto';
+import { IssuePolicyDto } from './dtos/issuePolicy.dto';
 import { Policy } from './entities/policy.entity';
 
 @EntityRepository(Policy)
 export class PolicyRepository extends BaseRepository<Policy> {
-  public async createPolicy(
-    generatePolicyDto: GeneratePolicyDto,
+  public async issuePolicy(
+    issuePolicyDto: IssuePolicyDto,
   ): Promise<Policy | null> {
-    return this.save(generatePolicyDto);
+    return this.save(issuePolicyDto);
   }
 
-  public async getAllPolicies(userId): Promise<Policy[]> {
-    console.log(userId)
-    return await this.repository
+  public async getAllPoliciesByIssuerId(issuerId): Promise<Policy[]> {
+    return this.repository
       .createQueryBuilder('Policy')
       .innerJoinAndSelect('Policy.issuedBy', 'User')
-      .where('Policy.issuerId = :userId', { userId })
-      .orderBy('Policy.createdAt', 'DESC')
+      .where('Policy.issuerId = :issuerId', { issuerId })
       .getMany();
+  }
+
+  public async getPolicyDetailsByPolicyId(policyId: string) {
+    return this.repository
+      .createQueryBuilder('Policy')
+      .innerJoinAndSelect('Policy.issuedBy', 'User')
+      .where('Policy.id = :id', { id: policyId })
+      .getOne();
   }
 }

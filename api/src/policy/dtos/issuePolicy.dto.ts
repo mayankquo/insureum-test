@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty } from "class-validator";
 import { InsuranceType } from "src/core/enums/insuranceType";
 
-export class GeneratePolicyDto{
+export class IssuePolicyDto{
 
     @ApiProperty()
 	@IsNotEmpty()

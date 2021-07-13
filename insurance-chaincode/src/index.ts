@@ -1,4 +1,4 @@
-import { InsuranceContract } from "./insuranceContract";
-export { InsuranceContract } from "./insuranceContract";
+import { PolicyContract } from "./contracts/insuranceContract";
+export { PolicyContract as PolicyContract } from "./contracts/insuranceContract";
 
-export const contracts: any[] = [ InsuranceContract ];
+export const contracts: any[] = [ PolicyContract ];

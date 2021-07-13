@@ -1,12 +1,12 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { NetworkService } from 'src/network/network.service';
 import { UserDto } from './dtos';
 import { UserRepository } from './user.repository';
 import { plainToClass } from 'class-transformer';
 import { ResponseDTO } from 'src/core/dtos';
 import { UserRole } from 'src/core/enums/userRole';
 import { Orgs } from 'src/core/enums';
+import { UserNetworkService } from './user.network.service';
 
 const LOGGER_PREFIX = 'UserService';
 
@@ -15,7 +15,8 @@ export class UserService {
   constructor(
     @InjectRepository(UserRepository)
     private readonly userRepository: UserRepository,
-    private readonly networkService: NetworkService,
+    @Inject(UserNetworkService)
+    private readonly userNetworkService: UserNetworkService,
   ) {}
 
   /**
@@ -27,37 +28,13 @@ export class UserService {
     try {
       if (newUser.role === UserRole.Insurer) {
         newUser.org = Orgs.Insurer;
-        return await this.registerInsurer(newUser);
-      } else {
-        await this.userRepository.save(newUser);
-        return plainToClass(ResponseDTO, {
-          success: true,
-        });
+        await this.userNetworkService.registerInsurer(newUser);
       }
-    } catch (error) {
-      console.log(LOGGER_PREFIX, 'registerUser', error);
-      throw new HttpException(
-        `Something went wrong. Please try again later.`,
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
-  }
 
-  private async registerInsurer(newUser: UserDto) {
-    try {
-      await this.networkService.registerAndEnrollUser(newUser);
-      const wallet = await this.networkService.buildWallet(newUser.org);
-      const isUserEnrolled = !!(await wallet.get(newUser.email));
-      if (isUserEnrolled) {
-        await this.userRepository.save(newUser);
-        return plainToClass(ResponseDTO, {
-          success: true,
-        });
-      } else {
-        return plainToClass(ResponseDTO, {
-          success: false,
-        });
-      }
+      await this.userRepository.save(newUser);
+      return plainToClass(ResponseDTO, {
+        success: true,
+      });
     } catch (error) {
       console.log(LOGGER_PREFIX, 'registerUser', error);
       throw new HttpException(

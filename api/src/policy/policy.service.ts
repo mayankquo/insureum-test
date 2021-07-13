@@ -1,10 +1,11 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToClass } from 'class-transformer';
 import { ResponseDTO } from 'src/core/dtos';
 import { UserRole } from 'src/core/enums/userRole';
+import { NetworkService } from 'src/network/network.service';
 import { UserRepository } from 'src/user/user.repository';
-import { GeneratePolicyDto } from './dtos/genaratePolicy.dto';
+import { IssuePolicyDto } from './dtos/issuePolicy.dto';
 import { PolicyRepository } from './policy.repository';
 
 const LOGGER_PREFIX = 'PolicyService';
@@ -22,10 +23,10 @@ export class PolicyService {
    * Create new insurance policy
    * @param generatePolicyDto
    */
-  public async generatePolicy(generatePolicyDto: GeneratePolicyDto) {
+  public async issuePolicy(issuePolicyDto: IssuePolicyDto) {
     const user = await this.userRepository.get({
       where: {
-        id: generatePolicyDto.issuerId,
+        id: issuePolicyDto.issuerId,
         role: UserRole.Insurer,
       },
     });
@@ -33,20 +34,27 @@ export class PolicyService {
     if (!user) {
       throw new HttpException('User does not exists', HttpStatus.BAD_REQUEST);
     }
-    const newPolicy = await this.policyRepository.createPolicy(
-      generatePolicyDto,
-    );
-    return plainToClass(ResponseDTO, {
-      success: true,
-      data: newPolicy,
-    });
+
+    try {
+      const newPolicy = await this.policyRepository.issuePolicy(issuePolicyDto);
+      return plainToClass(ResponseDTO, {
+        success: true,
+        data: newPolicy,
+      });
+    } catch (error) {
+      console.log(LOGGER_PREFIX, 'getAllPolicies', error);
+      throw new HttpException(
+        `Something went wrong. Please try again later.`,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
-  public async getAllPolicies(userId: string) {
+  public async getAllPoliciesByIssuerId(issuerId: string) {
     try {
       const user = this.userRepository.get({
         where: {
-          id: userId,
+          id: issuerId,
           role: UserRole.Insurer,
         },
       });
@@ -55,7 +63,7 @@ export class PolicyService {
         throw new HttpException('User does not exists', HttpStatus.BAD_REQUEST);
       }
 
-      const policies = this.policyRepository.getAllPolicies(userId);
+      const policies = this.policyRepository.getAllPoliciesByIssuerId(issuerId);
       return plainToClass(ResponseDTO, {
         success: true,
         data: policies,
