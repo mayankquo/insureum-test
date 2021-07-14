@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { NetworkService } from 'src/network/network.service';
 import { UserDto } from './dtos';
 
-const LOGGER_PREFIX = 'PolicyTxnService';
+const LOGGER_PREFIX = 'UserNetworkService';
 
 @Injectable()
 export class UserNetworkService {

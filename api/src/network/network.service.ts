@@ -14,23 +14,30 @@ const admin = {
 
 @Injectable()
 export class NetworkService {
-  public async buildWallet(org: Orgs): Promise<Wallet> {
+  private wallet: Wallet;
+
+  constructor() {
+    for (let org in Orgs) {
+      console.log(org);
+      this.buildWallet(Orgs[org]);
+      
+    }
+  }
+
+  public async buildWallet(org: Orgs) {
     try {
-      let wallet;
       const walletPath = path.resolve(
         __dirname,
+        '..',
         '..',
         '..',
         'wallet',
         `${org}`,
       );
-
-      if (fs.existsSync(walletPath)) {
-        wallet = await Wallets.newFileSystemWallet(walletPath);
+      if (!fs.existsSync(walletPath)) {
+        this.wallet = await Wallets.newFileSystemWallet(walletPath);
         console.log(`Built a file system wallet at ${walletPath}`);
       }
-
-      return wallet;
     } catch (error) {
       console.log(`${LOGGER_PREFIX}::buildWallet()::`, error);
     }
@@ -75,8 +82,8 @@ export class NetworkService {
 
   private async enrollAdmin(org: Orgs, ccp, caHostName): Promise<void> {
     try {
-      const wallet = await this.buildWallet(org);
-      const adminIdentity = await wallet.get(admin.email);
+      await this.buildWallet(org);
+      const adminIdentity = await this.wallet.get(admin.email);
 
       if (adminIdentity) {
         console.log(
@@ -100,7 +107,7 @@ export class NetworkService {
         mspId: `${org}MSP`,
         type: 'X.509',
       };
-      await wallet.put(admin.email, x509Identity);
+      await this.wallet.put(admin.email, x509Identity);
       console.log(
         'Successfully enrolled admin user and imported it into the wallet',
       );
@@ -121,7 +128,7 @@ export class NetworkService {
       const { ccpPath, caHostName } = this.getCcpPathAndCaHostName(user.org);
       const ccp = this.buildCCPOrg(user.org);
       const wallet = await this.buildWallet(user.org);
-      const userIdentity = await wallet.get(user.email);
+      const userIdentity = await this.wallet.get(user.email);
       if (userIdentity) {
         console.log(
           `An identity for the user ${user.email} already exists in the wallet`,
@@ -129,7 +136,7 @@ export class NetworkService {
         return;
       }
 
-      let adminIdentity = await wallet.get(admin.email);
+      let adminIdentity = await this.wallet.get(admin.email);
       if (!adminIdentity) {
         console.log(
           'An identity for the admin user for %s does not exist in the wallet',
@@ -137,10 +144,10 @@ export class NetworkService {
         );
         console.log('Enroll the admin user before retrying');
         await this.enrollAdmin(user.org, ccp, caHostName);
-        adminIdentity = await wallet.get(admin.email);
+        adminIdentity = await this.wallet.get(admin.email);
       }
 
-      const provider = wallet
+      const provider = this.wallet
         .getProviderRegistry()
         .getProvider(adminIdentity.type);
       const adminUser = await provider.getUserContext(
@@ -169,7 +176,7 @@ export class NetworkService {
         mspId: `${user.org}MSP`,
         type: 'X.509',
       };
-      await wallet.put(user.email, x509Identity);
+      await this.wallet.put(user.email, x509Identity);
       console.log(
         `Successfully registered and enrolled user ${user.email} and imported it into the wallet`,
       );
@@ -185,10 +192,10 @@ export class NetworkService {
   ): Promise<Gateway> {
     try {
       const connectionProfile = this.buildCCPOrg(org);
-      const wallet = await this.buildWallet(org);
+      // const wallet = await this.buildWallet(org);
       const gatewayOptions: GatewayOptions = {
-        identity: await wallet.get(email),
-        wallet,
+        identity: await this.wallet.get(email),
+        wallet: this.wallet,
       };
       const gateway = new Gateway();
       await gateway.connect(connectionProfile, gatewayOptions);

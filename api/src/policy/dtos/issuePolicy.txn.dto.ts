@@ -5,6 +5,7 @@ export class IssuePolicyTxnDto {
   public id: string;
   public issuedBy: Insurer;
   public type: InsuranceType;
+  public premium: string;
   public sumCovered: string;
   public issuedAt: Date;
 }

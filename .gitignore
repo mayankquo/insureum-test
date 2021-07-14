@@ -2,8 +2,8 @@
 /api/dist
 /api/node_modules
 
-/insurance-chaincode/node_modules
-/insurance-chaincode/dist
+/policy-chaincode/node_modules
+/policy-chaincode/dist
 
 # Logs
 /api/logs

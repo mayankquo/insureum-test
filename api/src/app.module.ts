@@ -8,7 +8,6 @@ import { ConfigService } from './config/config.service';
 import { CoreModule } from './core/core.module';
 import { NetworkModule } from './network/network.module';
 import { PolicyModule } from './policy/policy.module';
-import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -21,7 +20,6 @@ import { AuthModule } from './auth/auth.module';
     CoreModule,
     NetworkModule,
     PolicyModule,
-    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

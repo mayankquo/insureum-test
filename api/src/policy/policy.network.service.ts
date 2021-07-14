@@ -44,6 +44,7 @@ export class PolicyNetworkService {
         transactionName,
         ...args,
       );
+      console.log(submitResult, evalResult)
     } catch (error) {
       console.log(LOGGER_PREFIX, 'issuePolicyTxn', error);
       throw new Error(error);
